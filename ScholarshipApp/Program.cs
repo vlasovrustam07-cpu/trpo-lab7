@@ -1,16 +1,21 @@
+// <copyright file="Program.cs" company="rystia">
+// Учебный проект по ТРПО, лабораторная работа 7.
+// </copyright>
+
 namespace ScholarshipApp
 {
     /// <summary>
     /// Консольное приложение для учёта студентов и расчёта стипендии.
     /// </summary>
-    class Program
+    internal class Program
     {
-        static StudentRegistry registry = new StudentRegistry();
+        private static readonly StudentRegistry Registry = new StudentRegistry();
 
         /// <summary>
         /// Точка входа: главное меню программы.
         /// </summary>
-        static void Main(string[] args)
+        /// <param name="args">Аргументы командной строки (не используются).</param>
+        private static void Main(string[] args)
         {
             while (true)
             {
@@ -37,14 +42,14 @@ namespace ScholarshipApp
         }
 
         // Выводит пункты главного меню.
-        static void PrintMenu()
+        private static void PrintMenu()
         {
             Console.WriteLine();
             Console.WriteLine("1 - добавить студента, 2 - список, 3 - статистика, 0 - выход");
         }
 
         // Запрашивает данные студента, проверяет их и добавляет в список.
-        static void AddStudent()
+        private static void AddStudent()
         {
             Console.Write("ФИО: ");
             string fullName = Console.ReadLine().Trim();
@@ -70,30 +75,30 @@ namespace ScholarshipApp
                 return;
             }
 
-            Student student = registry.AddStudent(fullName, group, gpa);
+            Student student = Registry.AddStudent(fullName, group, gpa);
             Console.WriteLine($"Студент добавлен. Стипендия: {student.Scholarship} руб.");
         }
 
         // Печатает таблицу всех студентов.
-        static void PrintStudents()
+        private static void PrintStudents()
         {
-            if (registry.Students.Count == 0)
+            if (Registry.Students.Count == 0)
             {
                 Console.WriteLine("Список студентов пуст.");
                 return;
             }
 
-            foreach (Student student in registry.Students)
+            foreach (Student student in Registry.Students)
             {
                 Console.WriteLine($"{student.FullName} | {student.Group} | {student.Gpa:0.00} | {student.Scholarship} руб.");
             }
         }
 
         // Печатает средний балл и общий фонд стипендий.
-        static void PrintStatistics()
+        private static void PrintStatistics()
         {
-            Console.WriteLine($"Средний балл: {registry.GetAverageGpa():0.00}");
-            Console.WriteLine($"Фонд стипендий: {registry.GetTotalFund()} руб.");
+            Console.WriteLine($"Средний балл: {Registry.GetAverageGpa():0.00}");
+            Console.WriteLine($"Фонд стипендий: {Registry.GetTotalFund()} руб.");
         }
     }
 }

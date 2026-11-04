@@ -1,3 +1,7 @@
+// <copyright file="Student.cs" company="rystia">
+// Учебный проект по ТРПО, лабораторная работа 7.
+// </copyright>
+
 namespace ScholarshipApp
 {
     /// <summary>

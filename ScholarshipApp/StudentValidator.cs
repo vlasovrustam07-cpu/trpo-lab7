@@ -1,3 +1,7 @@
+// <copyright file="StudentValidator.cs" company="rystia">
+// Учебный проект по ТРПО, лабораторная работа 7.
+// </copyright>
+
 namespace ScholarshipApp
 {
     /// <summary>
@@ -32,11 +36,15 @@ namespace ScholarshipApp
         /// <summary>
         /// Проверяет, что название группы не пустое.
         /// </summary>
+        /// <param name="group">Название группы.</param>
+        /// <returns><c>true</c>, если группа указана.</returns>
         public static bool IsValidGroup(string group) => !string.IsNullOrWhiteSpace(group);
 
         /// <summary>
         /// Проверяет, что средний балл находится в диапазоне от 0 до 5.
         /// </summary>
+        /// <param name="gpa">Средний балл.</param>
+        /// <returns><c>true</c>, если балл от 0 до 5 включительно.</returns>
         public static bool IsValidGpa(double gpa) => gpa >= 0 && gpa <= 5;
     }
 }

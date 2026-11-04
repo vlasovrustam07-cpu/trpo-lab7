@@ -1,3 +1,7 @@
+// <copyright file="StudentRegistry.cs" company="rystia">
+// Учебный проект по ТРПО, лабораторная работа 7.
+// </copyright>
+
 namespace ScholarshipApp
 {
     /// <summary>
@@ -5,17 +9,21 @@ namespace ScholarshipApp
     /// </summary>
     public class StudentRegistry
     {
-        private readonly List<Student> _students = new List<Student>();
-        private readonly ScholarshipCalculator _calculator = new ScholarshipCalculator();
+        private readonly List<Student> students = new List<Student>();
+        private readonly ScholarshipCalculator calculator = new ScholarshipCalculator();
 
         /// <summary>
         /// Все добавленные студенты.
         /// </summary>
-        public IReadOnlyList<Student> Students => _students;
+        public IReadOnlyList<Student> Students => this.students;
 
         /// <summary>
         /// Добавляет студента в список и назначает ему стипендию.
         /// </summary>
+        /// <param name="fullName">ФИО студента.</param>
+        /// <param name="group">Учебная группа.</param>
+        /// <param name="gpa">Средний балл от 0 до 5.</param>
+        /// <returns>Добавленный студент с рассчитанной стипендией.</returns>
         public Student AddStudent(string fullName, string group, double gpa)
         {
             Student student = new Student
@@ -23,29 +31,31 @@ namespace ScholarshipApp
                 FullName = fullName,
                 Group = group,
                 Gpa = gpa,
-                Scholarship = _calculator.CalculateScholarship(gpa)
+                Scholarship = this.calculator.CalculateScholarship(gpa),
             };
-            _students.Add(student);
+            this.students.Add(student);
             return student;
         }
 
         /// <summary>
         /// Возвращает средний балл по всем студентам.
         /// </summary>
+        /// <returns>Средний балл.</returns>
         public double GetAverageGpa()
         {
             double sum = 0;
-            foreach (Student student in _students)
+            foreach (Student student in this.students)
             {
                 sum += student.Gpa;
             }
 
-            return sum / _students.Count;
+            return sum / this.students.Count;
         }
 
         /// <summary>
         /// Возвращает общий фонд стипендий в рублях.
         /// </summary>
-        public int GetTotalFund() => _calculator.CalculateTotalFund(_students);
+        /// <returns>Сумма стипендий всех студентов.</returns>
+        public int GetTotalFund() => this.calculator.CalculateTotalFund(this.students);
     }
 }
