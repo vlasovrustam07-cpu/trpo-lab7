@@ -12,12 +12,12 @@ namespace ScholarshipApp
         /// <summary>
         /// Получает или задает фамилию, имя и отчество студента.
         /// </summary>
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         /// <summary>
         /// Получает или задает учебную группу, например «ИСТ-21».
         /// </summary>
-        public string Group { get; set; }
+        public string Group { get; set; } = string.Empty;
 
         /// <summary>
         /// Получает или задает средний балл от 0 до 5.

@@ -24,8 +24,26 @@ namespace ScholarshipApp
         /// <param name="group">Учебная группа.</param>
         /// <param name="gpa">Средний балл от 0 до 5.</param>
         /// <returns>Добавленный студент с рассчитанной стипендией.</returns>
+        /// <exception cref="ArgumentException">ФИО или группа указаны неверно.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Балл вне диапазона от 0 до 5.</exception>
         public Student AddStudent(string fullName, string group, double gpa)
         {
+            // Повторная проверка данных: класс можно вызвать не только из консольного меню.
+            if (!StudentValidator.IsValidFullName(fullName))
+            {
+                throw new ArgumentException("ФИО не может быть пустым и не должно содержать цифры.", nameof(fullName));
+            }
+
+            if (!StudentValidator.IsValidGroup(group))
+            {
+                throw new ArgumentException("Группа не может быть пустой.", nameof(group));
+            }
+
+            if (!StudentValidator.IsValidGpa(gpa))
+            {
+                throw new ArgumentOutOfRangeException(nameof(gpa), gpa, "Средний балл должен быть от 0 до 5.");
+            }
+
             Student student = new Student
             {
                 FullName = fullName,
@@ -40,9 +58,15 @@ namespace ScholarshipApp
         /// <summary>
         /// Возвращает средний балл по всем студентам.
         /// </summary>
-        /// <returns>Средний балл.</returns>
+        /// <returns>Средний балл или 0, если список пуст.</returns>
         public double GetAverageGpa()
         {
+            // Защита от деления на ноль: у пустого списка средний балл равен 0.
+            if (this.students.Count == 0)
+            {
+                return 0;
+            }
+
             double sum = 0;
             foreach (Student student in this.students)
             {

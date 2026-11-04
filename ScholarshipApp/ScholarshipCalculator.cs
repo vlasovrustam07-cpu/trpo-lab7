@@ -24,8 +24,14 @@ namespace ScholarshipApp
         /// </summary>
         /// <param name="gpa">Средний балл студента.</param>
         /// <returns>3000 рублей при среднем балле от 4.5, иначе 0.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Балл вне диапазона от 0 до 5.</exception>
         public int CalculateScholarship(double gpa)
         {
+            if (!StudentValidator.IsValidGpa(gpa))
+            {
+                throw new ArgumentOutOfRangeException(nameof(gpa), gpa, "Средний балл должен быть от 0 до 5.");
+            }
+
             if (gpa >= MinGpaForScholarship)
             {
                 return ScholarshipAmount;
@@ -39,8 +45,11 @@ namespace ScholarshipApp
         /// </summary>
         /// <param name="students">Список студентов.</param>
         /// <returns>Сумма стипендий всех студентов в рублях.</returns>
+        /// <exception cref="ArgumentNullException">Список не передан.</exception>
         public int CalculateTotalFund(List<Student> students)
         {
+            ArgumentNullException.ThrowIfNull(students);
+
             int total = 0;
             foreach (Student student in students)
             {

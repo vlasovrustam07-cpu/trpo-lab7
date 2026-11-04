@@ -20,23 +20,38 @@ namespace ScholarshipApp
             while (true)
             {
                 PrintMenu();
-                string choice = Console.ReadLine();
-                switch (choice)
+                string? choice = Console.ReadLine();
+
+                // Конец ввода (Ctrl+Z или закрытый поток) — завершаем программу без ошибки.
+                if (choice == null)
                 {
-                    case "1":
-                        AddStudent();
-                        break;
-                    case "2":
-                        PrintStudents();
-                        break;
-                    case "3":
-                        PrintStatistics();
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        Console.WriteLine("Неизвестная команда, выберите пункт меню.");
-                        break;
+                    return;
+                }
+
+                try
+                {
+                    switch (choice.Trim())
+                    {
+                        case "1":
+                            AddStudent();
+                            break;
+                        case "2":
+                            PrintStudents();
+                            break;
+                        case "3":
+                            PrintStatistics();
+                            break;
+                        case "0":
+                            return;
+                        default:
+                            Console.WriteLine("Неизвестная команда, выберите пункт меню.");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Непредвиденная ошибка не должна закрывать программу: сообщаем и продолжаем.
+                    Console.WriteLine($"Непредвиденная ошибка: {ex.Message}");
                 }
             }
         }
@@ -52,7 +67,7 @@ namespace ScholarshipApp
         private static void AddStudent()
         {
             Console.Write("ФИО: ");
-            string fullName = Console.ReadLine().Trim();
+            string fullName = ReadInput();
             if (!StudentValidator.IsValidFullName(fullName))
             {
                 Console.WriteLine("Ошибка: ФИО не может быть пустым и не должно содержать цифры.");
@@ -60,7 +75,7 @@ namespace ScholarshipApp
             }
 
             Console.Write("Группа: ");
-            string group = Console.ReadLine().Trim();
+            string group = ReadInput();
             if (!StudentValidator.IsValidGroup(group))
             {
                 Console.WriteLine("Ошибка: группа не может быть пустой.");
@@ -68,8 +83,17 @@ namespace ScholarshipApp
             }
 
             Console.Write("Средний балл: ");
-            double gpa = double.Parse(Console.ReadLine());
-            if (!StudentValidator.IsValidGpa(gpa))
+            double gpa;
+            try
+            {
+                gpa = StudentValidator.ParseGpa(ReadInput());
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Ошибка: введите число, например 4,5 или 4.5.");
+                return;
+            }
+            catch (ArgumentOutOfRangeException)
             {
                 Console.WriteLine("Ошибка: средний балл должен быть от 0 до 5.");
                 return;
@@ -77,6 +101,13 @@ namespace ScholarshipApp
 
             Student student = Registry.AddStudent(fullName, group, gpa);
             Console.WriteLine($"Студент добавлен. Стипендия: {student.Scholarship} руб.");
+        }
+
+        // Читает строку с консоли; при конце ввода возвращает пустую строку вместо null.
+        private static string ReadInput()
+        {
+            string? input = Console.ReadLine();
+            return input == null ? string.Empty : input.Trim();
         }
 
         // Печатает таблицу всех студентов.
@@ -97,6 +128,13 @@ namespace ScholarshipApp
         // Печатает средний балл и общий фонд стипендий.
         private static void PrintStatistics()
         {
+            // Защита от деления на ноль: для пустого списка статистику не считаем.
+            if (Registry.Students.Count == 0)
+            {
+                Console.WriteLine("Список студентов пуст — статистика недоступна.");
+                return;
+            }
+
             Console.WriteLine($"Средний балл: {Registry.GetAverageGpa():0.00}");
             Console.WriteLine($"Фонд стипендий: {Registry.GetTotalFund()} руб.");
         }
