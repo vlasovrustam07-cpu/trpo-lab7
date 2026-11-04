@@ -15,11 +15,13 @@ namespace ScholarshipApp
                 {
                     Console.Write("ФИО: ");
                     string a = Console.ReadLine().Trim();
-                    if (!Validator.check(a)) { Console.WriteLine("Ошибка: ФИО не может быть пустым"); continue; }
+                    if (!Validator.check(a)) { Console.WriteLine("Ошибка: ФИО не может быть пустым и не должно содержать цифры"); continue; }
                     Console.Write("Группа: ");
                     string b = Console.ReadLine().Trim();
+                    if (b == "") { Console.WriteLine("Ошибка: группа не может быть пустой"); continue; }
                     Console.Write("Средний балл: ");
                     double n2 = double.Parse(Console.ReadLine());
+                    if (n2 < 0 || n2 > 5) { Console.WriteLine("Ошибка: средний балл должен быть от 0 до 5"); continue; }
                     Student s = new Student();
                     s.n = a; s.g = b; s.s = n2;
                     s.st = c.calc(n2);

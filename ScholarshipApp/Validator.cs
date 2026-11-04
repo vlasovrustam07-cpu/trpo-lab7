@@ -4,8 +4,10 @@ namespace ScholarshipApp
     {
         public static bool check(string x)
         {
-            if (x != "") return true;
-            return false;
+            if (string.IsNullOrWhiteSpace(x)) return false;
+            foreach (char ch in x)
+                if (char.IsDigit(ch)) return false;
+            return true;
         }
     }
 }
