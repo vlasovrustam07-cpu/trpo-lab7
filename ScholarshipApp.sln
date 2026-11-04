@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScholarshipApp", "ScholarshipApp\ScholarshipApp.csproj", "{2AF8CE0A-FC34-4D5E-A7B2-E01F9E2895D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScholarshipApp.Tests", "ScholarshipApp.Tests\ScholarshipApp.Tests.csproj", "{CE810A96-D384-472B-AC60-16FE67ACCD93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2AF8CE0A-FC34-4D5E-A7B2-E01F9E2895D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AF8CE0A-FC34-4D5E-A7B2-E01F9E2895D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AF8CE0A-FC34-4D5E-A7B2-E01F9E2895D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE810A96-D384-472B-AC60-16FE67ACCD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE810A96-D384-472B-AC60-16FE67ACCD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE810A96-D384-472B-AC60-16FE67ACCD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE810A96-D384-472B-AC60-16FE67ACCD93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
