@@ -1,49 +1,99 @@
 namespace ScholarshipApp
 {
+    /// <summary>
+    /// Консольное приложение для учёта студентов и расчёта стипендии.
+    /// </summary>
     class Program
     {
+        static StudentRegistry registry = new StudentRegistry();
+
+        /// <summary>
+        /// Точка входа: главное меню программы.
+        /// </summary>
         static void Main(string[] args)
         {
-            List<Student> list = new List<Student>();
-            ScholarshipCalculator c = new ScholarshipCalculator();
             while (true)
             {
-                Console.WriteLine("1 - добавить студента, 2 - список, 3 - статистика, 0 - выход");
-                string x1 = Console.ReadLine();
-                if (x1 == "0") break;
-                if (x1 == "1")
+                PrintMenu();
+                string choice = Console.ReadLine();
+                switch (choice)
                 {
-                    Console.Write("ФИО: ");
-                    string a = Console.ReadLine().Trim();
-                    if (!Validator.check(a)) { Console.WriteLine("Ошибка: ФИО не может быть пустым и не должно содержать цифры"); continue; }
-                    Console.Write("Группа: ");
-                    string b = Console.ReadLine().Trim();
-                    if (b == "") { Console.WriteLine("Ошибка: группа не может быть пустой"); continue; }
-                    Console.Write("Средний балл: ");
-                    double n2 = double.Parse(Console.ReadLine());
-                    if (n2 < 0 || n2 > 5) { Console.WriteLine("Ошибка: средний балл должен быть от 0 до 5"); continue; }
-                    Student s = new Student();
-                    s.n = a; s.g = b; s.s = n2;
-                    s.st = c.calc(n2);
-                    list.Add(s);
-                    Console.WriteLine("Студент добавлен. Стипендия: " + s.st);
-                }
-                if (x1 == "2")
-                {
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        Console.WriteLine(list[i].n + " | " + list[i].g + " | " + list[i].s + " | " + list[i].st);
-                    }
-                }
-                if (x1 == "3")
-                {
-                    double sum = 0;
-                    for (int i = 0; i < list.Count; i++) sum = sum + list[i].s;
-                    double avg = sum / list.Count;
-                    Console.WriteLine("Средний балл: " + avg);
-                    Console.WriteLine("Фонд стипендий: " + c.total(list));
+                    case "1":
+                        AddStudent();
+                        break;
+                    case "2":
+                        PrintStudents();
+                        break;
+                    case "3":
+                        PrintStatistics();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Неизвестная команда, выберите пункт меню.");
+                        break;
                 }
             }
+        }
+
+        // Выводит пункты главного меню.
+        static void PrintMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("1 - добавить студента, 2 - список, 3 - статистика, 0 - выход");
+        }
+
+        // Запрашивает данные студента, проверяет их и добавляет в список.
+        static void AddStudent()
+        {
+            Console.Write("ФИО: ");
+            string fullName = Console.ReadLine().Trim();
+            if (!StudentValidator.IsValidFullName(fullName))
+            {
+                Console.WriteLine("Ошибка: ФИО не может быть пустым и не должно содержать цифры.");
+                return;
+            }
+
+            Console.Write("Группа: ");
+            string group = Console.ReadLine().Trim();
+            if (!StudentValidator.IsValidGroup(group))
+            {
+                Console.WriteLine("Ошибка: группа не может быть пустой.");
+                return;
+            }
+
+            Console.Write("Средний балл: ");
+            double gpa = double.Parse(Console.ReadLine());
+            if (!StudentValidator.IsValidGpa(gpa))
+            {
+                Console.WriteLine("Ошибка: средний балл должен быть от 0 до 5.");
+                return;
+            }
+
+            Student student = registry.AddStudent(fullName, group, gpa);
+            Console.WriteLine($"Студент добавлен. Стипендия: {student.Scholarship} руб.");
+        }
+
+        // Печатает таблицу всех студентов.
+        static void PrintStudents()
+        {
+            if (registry.Students.Count == 0)
+            {
+                Console.WriteLine("Список студентов пуст.");
+                return;
+            }
+
+            foreach (Student student in registry.Students)
+            {
+                Console.WriteLine($"{student.FullName} | {student.Group} | {student.Gpa:0.00} | {student.Scholarship} руб.");
+            }
+        }
+
+        // Печатает средний балл и общий фонд стипендий.
+        static void PrintStatistics()
+        {
+            Console.WriteLine($"Средний балл: {registry.GetAverageGpa():0.00}");
+            Console.WriteLine($"Фонд стипендий: {registry.GetTotalFund()} руб.");
         }
     }
 }
