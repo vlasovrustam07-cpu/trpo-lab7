@@ -12,7 +12,9 @@
 *.sln.docstates
 
 # VS Code / Rider
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 .idea/
 
 # Результаты тестов
