@@ -13,7 +13,7 @@ namespace ScholarshipApp
         private readonly ScholarshipCalculator calculator = new ScholarshipCalculator();
 
         /// <summary>
-        /// Все добавленные студенты.
+        /// Получает всех добавленных студентов.
         /// </summary>
         public IReadOnlyList<Student> Students => this.students;
 
